@@ -32,7 +32,7 @@ module jtlabrun_video(
     input               dip_pause,
     input               start_button,
     // PROMs
-    input      [ 9:0]   prog_addr,
+    input      [ 8:0]   prog_addr,
     input      [ 3:0]   prog_data,
     input               prom_we,
     // CPU      interface
@@ -58,6 +58,8 @@ module jtlabrun_video(
     // Test
     input      [ 3:0]   gfx_en
 );
+
+localparam LABRUN=0, FLANE=1;
 
 parameter GAME=0; // 0=Labyrinth Runner, 1=Fast Lane
 
@@ -92,7 +94,10 @@ jtframe_cen48 u_cen(
     .cen1p5b    (           )
 );
 
-jtcontra_gfx #(.BYPASS_VPROM(1)) u_gfx(
+jtcontra_gfx #(
+    .BYPASS_VPROM(GAME==LABRUN),
+    .BYPASS_OPROM(GAME==FLANE)
+    ) u_gfx(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .clk24      ( clk24         ),
@@ -105,7 +110,7 @@ jtcontra_gfx #(.BYPASS_VPROM(1)) u_gfx(
     .VS         ( VS            ),
     // PROMs
     .prom_we    ( prom_we       ),
-    .prog_addr  ( prog_addr[8:0]),
+    .prog_addr  ({GAME==FLANE?1'b1:1'b0,prog_addr[7:0]} ), // ? explicit to indicate bit width
     .prog_data  ( prog_data[3:0]),
     // Screen position
     .hdump      (               ),

@@ -224,7 +224,7 @@ u_video (
     .start_button   ( &start_button ),
     // PROMs
     .prom_we        ( prom_we       ),
-    .prog_addr      ( prog_addr[9:0]),
+    .prog_addr      ( prog_addr[8:0]),
     .prog_data      ( prog_data[3:0]),
     // GFX - CPU interface
     .cpu_irqn       ( cpu_irqn      ),
