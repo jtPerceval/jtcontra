@@ -62,10 +62,7 @@ reg  [ 3:0] bank;
 reg  [ 7:0] port_in;
 reg         bank_en; // called PBCANG in schematics
 reg         video_sel;
-// Protection circuit (multiplyer)
-reg  [ 7:0] mul_factor[0:1];
-reg  [15:0] mul;
-
+wire [ 7:0] dmp_dout;
 
 // K007556 decoder only looks at A15-A9
 // second decoder for IOCS outputs then looks at A[4:2]
@@ -100,7 +97,7 @@ always @(*) begin   // latching this seems to prevent system bootup
         pal_cs:    cpu_din = pal_dout;
         in_cs:     cpu_din = port_in;
         // track_cs:
-        dmp_cs:    cpu_din = !A[0] ? mul[7:0] : mul[15:8];
+        dmp_cs:    cpu_din = dmp_dout;
         gfx1_cs:   cpu_din = gfx1_dout;
         gfx2_cs:   cpu_din = gfx2_dout;
         default:   cpu_din = 8'hff;
@@ -151,19 +148,14 @@ always @(posedge clk) begin
     end
 end
 
-always @(posedge clk) begin
-    if( rst ) begin
-        mul_factor[0] <= 8'd0;
-        mul_factor[1] <= 8'd0;
-        mul           <= 16'd0;
-    end else begin
-        // There goes one DSP cell:
-        mul <= mul_factor[0] * mul_factor[1];
-        if( dmp_cs && A[2:1]==2'b0 && !RnW) begin
-            if( !A[0] ) mul_factor[0]<=cpu_dout;
-            if(  A[0] ) mul_factor[1]<=cpu_dout;
-        end
-    end
-end
+jtcontra_007452 u_div(
+    .rst    ( rst       ),
+    .clk    ( clk       ),
+    .cs     ( dmp_cs & cpu_cen ),
+    .wrn    ( RnW       ),
+    .addr   ( A[2:0]    ),
+    .din    ( cpu_dout  ),
+    .dout   ( dmp_dout  )
+);
 
 endmodule
