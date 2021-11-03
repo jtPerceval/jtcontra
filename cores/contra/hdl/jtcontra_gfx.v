@@ -103,10 +103,10 @@ wire        strip_en   = mmr[1][1]; // strip scroll enable
 wire        strip_col  = mmr[1][2]; // strip scroll applies to columns (1) or rows (0)
 wire        strip_txt  = mmr[1][3]; // enables the text tilemap per strip
 wire        tile_msb   = mmr[3][0];
-assign      prio_en[0] = mmr[3][2]; // enables other priority bits
+assign      prio_en[0] = mmr[3][2]; // enables tile priority overall
 wire        obj_page   = mmr[3][3]; // select from which page to draw sprites
 wire        layout     = mmr[3][4]; // 5 columns on the left are text (wide layout)
-assign      prio_en[1] = mmr[3][5];
+assign      prio_en[1] = mmr[3][5]; // 0 gives priority to the scroll, even if scroll is zero
 wire        narrow_en  = mmr[3][6]; // 1 for not displaying first and last columns
 wire [3:0]  extra_mask = mmr[4][7:4];
 wire [3:0]  extra_bits = mmr[4][3:0];
@@ -363,7 +363,7 @@ wire        border_wide   = hdump<9'o20 || hdump>=9'o420;
 wire        blank_area    = vdump<9'o20 || (!layout && (border_narrow||border_wide));
 wire [11:0] obj_scan_addr;
 wire        scrwin        = scr_pxl[8];
-wire        tile_prio     = &prio_en & scrwin & ~tile_blank;
+wire        tile_prio     = prio_en[0] & scrwin & (~prio_en[1] | ~tile_blank);
 wire        no_obj        = layout && ( flip ? hdump>=9'o360 : hdump<8'o50);
 wire        scr_sel       = obj_blank || no_obj || tile_prio || txt_line;
 
