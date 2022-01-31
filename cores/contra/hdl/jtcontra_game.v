@@ -294,8 +294,8 @@ jtcontra_sound u_sound(
     .pcm_data   ( pcm_data      ),
     .pcm_ok     ( pcm_ok        ),
     // Sound output
-    .snd_left   ( snd_left      ),
-    .snd_right  ( snd_right     ),
+    .snd_left   ( snd_right     ), // channels reversed in
+    .snd_right  ( snd_left      ), // the real PCB too
     .sample     ( sample        ),
     .peak       ( game_led      )
 );
