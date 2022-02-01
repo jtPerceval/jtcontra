@@ -13,27 +13,9 @@ game:
       - jtcontra_gfx_tilemap.v
       - jtcontra_gfx_obj.v
 jtframe:
-  - from: clocking
-    get:
-      - jtframe_cen48.v
-      - jtframe_cen24.v
-      - jtframe_frac_cen.v
-  - from: ram
-    get:
-      - jtframe_vtimer.v
-      - jtframe_blank.v
-  - from: ram
-    get:
-      - jtframe_ram.v
-      - jtframe_dual_ram.v
-      - jtframe_prom.v
-      - jtframe_obj_buffer.v
   - from: sound
     get:
       - jtframe_mixer.v
-  - from: sdram
-    get:
-      - jtframe_dwnld.v
   - from: cpu
     get:
       - mc6809i.v
@@ -47,3 +29,4 @@ modules:
       - divfunc.v
       # Sound
       - jt007232.v
+      - common.yaml
