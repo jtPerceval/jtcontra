@@ -1,0 +1,37 @@
+game:
+  - from: contra
+    get:
+      - jtcontra_game.v
+      - jtcontra_main.v
+      - jtcontra_video.v
+      - jtcontra_gfx.v
+      - jtcontra_gfx_tilemap.v
+      - jtcontra_gfx_obj.v
+      - jtcontra_colmix.v
+jtframe:
+  - from: clocking
+    get:
+      - jtframe_cen48.v
+      - jtframe_cen24.v
+      - jtframe_frac_cen.v
+  - from: video
+    get:
+      - jtframe_vtimer.v
+      - jtframe_blank.v
+      - jtframe_credits.v
+  - get:
+    - jtframe_ff.v
+  - from: ram
+    get:
+      - jtframe_ram.v
+      - jtframe_dual_ram.v
+      - jtframe_prom.v
+      - jtframe_obj_buffer.v
+  - from: sdram
+    get:
+      - jtframe_dwnld.v
+  - from: cpu
+    get:
+      - mc6809i.v
+      - jtframe_sys6809.v
+      - jtframe_z80wait.v
