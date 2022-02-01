@@ -11,6 +11,7 @@ game:
       - jtcontra_gfx_tilemap.v
       - jtcontra_gfx_obj.v
 jtframe:
+  - get: [ jtframe_ff.v ]
   - from: clocking
     get:
       - jtframe_cen48.v
@@ -37,13 +38,17 @@ jtframe:
       - mc6809i.v
       - jtframe_sys6809.v
       - jtframe_z80wait.v
+  - from: video
+    get:
+      - jtframe_vtimer.v
+      - jtframe_blank.v
 modules:
   other:
     - get:
       # Protection device / Math coprocessor
       - jt051733.v
       - divfunc.v
-
-# JT12 (YM2203)
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) ../../../modules/jt12/hdl/jt03.qip
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jt12/jt49/hdl/filter/jt49_dcrm2.v
+    - from: jt12
+      get:
+        - hdl/jt03.qip
+        - jt49/hdl/filter/jt49_dcrm2.v
