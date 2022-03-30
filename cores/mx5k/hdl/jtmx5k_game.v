@@ -68,8 +68,7 @@ module jtmx5k_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [ 3:0]  gfx_en,
-    input   [ 7:0]  debug_bus
+    input   [ 3:0]  gfx_en
 );
 
 // SDRAM offsets.
