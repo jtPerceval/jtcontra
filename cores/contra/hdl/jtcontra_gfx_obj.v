@@ -219,6 +219,7 @@ jtframe_obj_buffer #(
     .wr_data( { oprom_addr[7:4], oprom_data } ),
     .wr_addr( line_addr     ),
     .we     ( line_we       ),
+    .flip   ( 1'b0          ),
     // Old data reads (and erases)
     .rd_addr( hdump         ),
     .rd     ( pxl_cen       ),  // data will be erased after the rd event

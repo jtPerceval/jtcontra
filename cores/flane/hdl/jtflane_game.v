@@ -100,7 +100,7 @@ wire        LHBL, LVBL;
 wire [13:0] cpu_addr;
 wire        gfx_irqn, gfx_romcs, pal_cs;
 wire        cpu_cen, cpu_rnw, cpu_irqn, cpu_nmin;
-wire [ 7:0] gfx_dout, pal_dout, cpu_dout;
+wire [ 7:0] gfx_dout, pal_dout, cpu_dout, nc;
 
 assign prog_rd    = 0;
 assign dwnld_busy = downloading;
@@ -132,7 +132,7 @@ u_dwnld(
     .ioctl_dout     ( ioctl_dout    ),
     .ioctl_wr       ( ioctl_wr      ),
     .prog_addr      ( prog_addr     ),
-    .prog_data      ( prog_data     ),
+    .prog_data      ({nc, prog_data}),
     .prog_mask      ( prog_mask     ), // active low
     .prog_we        ( prog_we       ),
     .prom_we        ( prom_we       ),

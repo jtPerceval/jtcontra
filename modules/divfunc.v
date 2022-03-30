@@ -19,6 +19,9 @@
 `define N(n)                       [(n)-1:0]
 `define FFx(signal,bits)           always @ ( posedge clk or posedge  rst ) if (   rst   )  signal <= bits;  else
 
+/* verilator lint_off WIDTH */
+/* verilator lint_off UNOPTFLAT */
+
 module divfunc
 #(
     parameter                      XLEN          = 32,
@@ -100,4 +103,5 @@ module divfunc
 
 endmodule
 
-
+/* verilator lint_on WIDTH */
+/* verilator lint_on UNOPTFLAT */
