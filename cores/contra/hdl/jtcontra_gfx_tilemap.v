@@ -92,7 +92,7 @@ reg         hflip, vflip;
 assign txt_line   = txt_his[1];
 assign txt_row    = txt_en || scores;
 assign scr_hn0    = (strip_en && !strip_col)? {1'b0,strip_pos} : hpos;
-assign line_addr  = { line, flip ? 9'h117-hrender  : hrender };
+assign line_addr  = { line, flip ? 9'h116-hrender  : hrender };
 assign scr_we     = line_we;
 assign rom_addr   = { tile_msb, code, vn[2:0]^{3{vflip}}, hn[2]^hflip }; // 13+3+1 = 17!
 assign scan_addr  = { txt_row, vn[7:3], hn[7:3] }; // 1 + 5 + 5 = 11
