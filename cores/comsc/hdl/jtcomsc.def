@@ -7,7 +7,7 @@ JTFRAME_MRA_DIP
 # Not really stereo, but left so jtcontra_game
 # can be shared easily
 STEREO_GAME
-COLORW=5
+JTFRAME_COLORW=5
 JTFRAME_WIDTH=280
 JTFRAME_HEIGHT=240
 JTFRAME_BUTTONS=2
