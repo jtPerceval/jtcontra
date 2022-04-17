@@ -136,7 +136,7 @@ jt51 u_jt51(
     .cen        ( cen_fm    ),
     .cen_p1     ( cen_fm2   ),
     .cs_n       ( !fm_cs    ), // chip select
-    .wr_n       ( RnW       ), // write
+    .wr_n       ( RnW | ~cpu_cen ), // write
     .a0         ( A[0]      ),
     .din        ( cpu_dout  ), // data in
     .dout       ( fm_dout   ), // data out

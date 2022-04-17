@@ -187,6 +187,8 @@ jt051733 u_prot(
     .dout   ( prot_dout )
 );
 
+wire fm_wrn = RnW | ~cpu_cen;
+
 jt03 u_fm0(
     .rst        ( rst        ),
     // CPU interface
@@ -195,7 +197,7 @@ jt03 u_fm0(
     .din        ( cpu_dout   ),
     .addr       ( ~A[0]      ),
     .cs_n       ( ~ym0_cs    ),
-    .wr_n       ( RnW        ),
+    .wr_n       ( fm_wrn     ),
     .psg_snd    ( psg0_snd   ),
     .fm_snd     ( fm0_snd    ),
     .snd_sample ( sample     ),
@@ -218,7 +220,7 @@ jt03 u_fm1(
     .din        ( cpu_dout   ),
     .addr       ( ~A[0]      ),
     .cs_n       ( ~ym1_cs    ),
-    .wr_n       ( RnW        ),
+    .wr_n       ( fm_wrn     ),
     .psg_snd    ( psg1_snd   ),
     .fm_snd     ( fm1_snd    ),
     .snd_sample (            ),
