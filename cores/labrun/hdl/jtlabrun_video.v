@@ -24,8 +24,6 @@ module jtlabrun_video(
     output              pxl_cen,
     output              LHBL,
     output              LVBL,
-    output              LHBL_dly,
-    output              LVBL_dly,
     output              HS,
     output              VS,
     output              flip,
@@ -66,6 +64,7 @@ parameter GAME=0; // 0=Labyrinth Runner, 1=Fast Lane
 wire [ 6:0] gfx_pxl;
 wire        gfx_palcs;
 wire [17:0] pre_gfx_addr;
+wire        preLHBL, preLVBL;
 
 generate
     if( GAME==1 ) begin
@@ -104,8 +103,8 @@ jtcontra_gfx #(
     .cpu_cen    ( cpu_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .pxl_cen    ( pxl_cen       ),
-    .LHBL       ( LHBL          ),
-    .LVBL       ( LVBL          ),
+    .LHBL       ( preLHBL       ),
+    .LVBL       ( preLVBL       ),
     .HS         ( HS            ),
     .VS         ( VS            ),
     // PROMs
@@ -150,8 +149,8 @@ jtlabrun_colmix u_colmix(
     .pxl_cen    ( pxl_cen       ),
     .LHBL       ( LHBL          ),
     .LVBL       ( LVBL          ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
+    .preLHBL    ( preLHBL       ),
+    .preLVBL    ( preLVBL       ),
     // CPU      interface
     .pal_cs     ( pal_cs        ),
     .cpu_rnw    ( cpu_rnw       ),

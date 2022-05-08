@@ -24,8 +24,6 @@ module jtmx5k_video(
     output              pxl_cen,
     output              LHBL,
     output              LVBL,
-    output              LHBL_dly,
-    output              LVBL_dly,
     output              HS,
     output              VS,
     output              flip,
@@ -62,6 +60,7 @@ wire [17:0] pre_gfx1_addr;
 wire        gfx1_sel, gfx2_sel;
 wire        post2_cs;
 wire [ 3:0] gfx1_pal;
+wire        preLHBL, preLVBL;
 
 //assign post2_cs = gfx1_sel && !cpu_rnw; // only writes
 assign post2_cs = 0;
@@ -112,8 +111,8 @@ jtcontra_gfx #(
     .cpu_cen    ( cpu_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .pxl_cen    ( pxl_cen       ),
-    .LHBL       ( LHBL          ),
-    .LVBL       ( LVBL          ),
+    .LHBL       ( preLHBL       ),
+    .LVBL       ( preLVBL       ),
     .HS         ( HS            ),
     .VS         ( VS            ),
     // PROMs
@@ -175,10 +174,10 @@ jtmx5k_colmix u_colmix(
     .cpu_cen    ( cpu_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .pxl_cen    ( pxl_cen       ),
+    .preLHBL    ( preLHBL       ),
+    .preLVBL    ( preLVBL       ),
     .LHBL       ( LHBL          ),
     .LVBL       ( LVBL          ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
     // CPU      interface
     .pal_cs     ( pal_cs        ),
     .cpu_rnw    ( cpu_rnw       ),

@@ -26,8 +26,8 @@ module jtmx5k_game(
     output   [4:0]  red,
     output   [4:0]  green,
     output   [4:0]  blue,
-    output          LHBL_dly,
-    output          LVBL_dly,
+    output          LHBL,
+    output          LVBL,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -92,7 +92,6 @@ wire        gfx1_cs;
 
 wire [ 7:0] dipsw_a, dipsw_b;
 wire [ 3:0] dipsw_c;
-wire        LHBL, LVBL;
 
 wire [15:0] cpu_addr;
 wire        gfx1_romcs, gfx2_romcs, gfx1_cfg_cs, gfx2_cfg_cs, pal_cs;
@@ -200,8 +199,6 @@ jtmx5k_video u_video (
     .pxl_cen        ( pxl_cen       ),
     .LHBL           ( LHBL          ),
     .LVBL           ( LVBL          ),
-    .LHBL_dly       ( LHBL_dly      ),
-    .LVBL_dly       ( LVBL_dly      ),
     .HS             ( HS            ),
     .VS             ( VS            ),
     .flip           ( dip_flip      ),

@@ -26,8 +26,8 @@ module jtflane_game(
     output   [4:0]  red,
     output   [4:0]  green,
     output   [4:0]  blue,
-    output          LHBL_dly,
-    output          LVBL_dly,
+    output          LHBL,
+    output          LVBL,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -95,7 +95,6 @@ wire [18:0] pcmc_addr, pcmd_addr;
 
 wire [ 7:0] dipsw_a, dipsw_b;
 wire [ 3:0] dipsw_c;
-wire        LHBL, LVBL;
 
 wire [13:0] cpu_addr;
 wire        gfx_irqn, gfx_romcs, pal_cs;
@@ -215,8 +214,6 @@ u_video (
     .pxl_cen        ( pxl_cen       ),
     .LHBL           ( LHBL          ),
     .LVBL           ( LVBL          ),
-    .LHBL_dly       ( LHBL_dly      ),
-    .LVBL_dly       ( LVBL_dly      ),
     .HS             ( HS            ),
     .VS             ( VS            ),
     .flip           ( dip_flip      ),

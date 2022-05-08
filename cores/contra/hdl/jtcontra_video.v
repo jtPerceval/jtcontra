@@ -24,8 +24,6 @@ module jtcontra_video(
     output              pxl_cen,
     output              LHBL,
     output              LVBL,
-    output              LHBL_dly,
-    output              LVBL_dly,
     output              HS,
     output              VS,
     output              flip,
@@ -75,6 +73,7 @@ wire [ 6:0] gfx1_pxl, gfx2_pxl;
 wire [17:0] gfx1_pre, gfx2_pre;
 wire [13:0] gfx_addr_in;
 wire        gfx1_sel, gfx2_sel;
+wire        preLHBL, preLVBL;
 
 
 generate
@@ -134,8 +133,8 @@ jtcontra_gfx #(
     .cpu_cen    ( cpu_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .pxl_cen    ( pxl_cen       ),
-    .LHBL       ( LHBL          ),
-    .LVBL       ( LVBL          ),
+    .LHBL       ( preLHBL       ),
+    .LVBL       ( preLVBL       ),
     .HS         ( HS            ),
     .VS         ( VS            ),
     // PROMs
@@ -181,8 +180,8 @@ jtcontra_gfx #(
     .cpu_cen    ( cpu_cen       ),
     .pxl2_cen   ( pxl2_cen      ),
     .pxl_cen    ( pxl_cen       ),
-    .LHBL       ( LHBL          ),
-    .LVBL       ( LVBL          ),
+    .LHBL       ( preLHBL       ),
+    .LVBL       ( preLVBL       ),
     .HS         ( HS            ),
     .VS         ( VS            ),
     // PROMs
@@ -224,8 +223,8 @@ jtcontra_colmix #(.GAME(GAME)) u_colmix(
     .pxl_cen    ( pxl_cen       ),
     .LHBL       ( LHBL          ),
     .LVBL       ( LVBL          ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
+    .preLHBL    ( preLHBL       ),
+    .preLVBL    ( preLVBL       ),
     // CPU      interface
     .pal_cs     ( pal_cs        ),
     .cpu_rnw    ( cpu_rnw       ),

@@ -26,10 +26,10 @@ module jtcontra_colmix(
     input               clk24,
     input               pxl2_cen,
     input               pxl_cen,
-    input               LHBL,
-    input               LVBL,
-    output              LHBL_dly,
-    output              LVBL_dly,
+    input               preLHBL,
+    input               preLVBL,
+    output              LHBL,
+    output              LVBL,
     // CPU      interface
     input               pal_cs,
     input               cpu_rnw,
@@ -99,15 +99,10 @@ jtframe_dual_ram #(.aw(8)) u_ram(
 always @(posedge clk) begin
     if( rst ) begin
         pal_half <= 0;
-        // red      <= 5'd0;
-        // green    <= 5'd0;
-        // blue     <= 5'd0;
+        pxl_aux  <= 0;
     end else begin
         pxl_aux  <= { pxl_aux[6:0], col_data };
         if( pxl_cen ) begin
-            // LVBL_dly <= LVBL;
-            // LHBL_dly <= LHBL;
-            // { blue, green, red } <= (!LVBL || !LHBL) ? 15'd0 : pxl_aux;
             col_in <= pxl_aux;
             pal_half <= 1;
         end else
@@ -118,10 +113,10 @@ end
 jtframe_blank #(.DLY(3),.DW(15)) u_blank(
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
+    .preLHBL    ( preLHBL   ),
+    .preLVBL    ( preLVBL   ),
     .LHBL       ( LHBL      ),
     .LVBL       ( LVBL      ),
-    .LHBL_dly   ( LHBL_dly  ),
-    .LVBL_dly   ( LVBL_dly  ),
     .preLBL     (           ),
     .rgb_in     ( col_in    ),
     .rgb_out    ( col_out   )

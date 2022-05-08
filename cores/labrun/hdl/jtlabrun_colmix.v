@@ -24,10 +24,10 @@ module jtlabrun_colmix(
     input               clk24,
     input               pxl2_cen,
     input               pxl_cen,
-    input               LHBL,
-    input               LVBL,
-    output              LHBL_dly,
-    output              LVBL_dly,
+    input               preLHBL,
+    input               preLVBL,
+    output              LHBL,
+    output              LVBL,
     // CPU      interface
     input               pal_cs,
     input               cpu_rnw,
@@ -85,10 +85,10 @@ end
 jtframe_blank #(.DLY(2),.DW(15)) u_blank(
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ),
+    .preLHBL    ( preLHBL   ),
+    .preLVBL    ( preLVBL   ),
     .LHBL       ( LHBL      ),
     .LVBL       ( LVBL      ),
-    .LHBL_dly   ( LHBL_dly  ),
-    .LVBL_dly   ( LVBL_dly  ),
     .preLBL     (           ),
     .rgb_in     ( col_in    ),
     .rgb_out    ( col_out   )
