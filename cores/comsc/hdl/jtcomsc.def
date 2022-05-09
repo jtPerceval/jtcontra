@@ -3,7 +3,6 @@ CORENAME=JTCOMSC
 GAMETOP=jtcontra_game
 JTCONTRA_PCB=1
 JTFRAME_CLK24
-JTFRAME_MRA_DIP
 # Not really stereo, but left so jtcontra_game
 # can be shared easily
 STEREO_GAME
