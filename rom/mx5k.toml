@@ -3,7 +3,6 @@
 mraauthor=["jotego"]
 
 [features]
-beta = true
 # nvram = 75777
 
 [parse]

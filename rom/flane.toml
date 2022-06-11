@@ -3,7 +3,6 @@
 mraauthor=["jotego"]
 
 [features]
-beta = true
 # debug= true
 # nvram = 75777
 
@@ -21,6 +20,7 @@ name="jtflane"
 
 [dipsw]
 delete = [ "Unused", "Unknown" ]
+rename = [ {name="Bonus Life", to="Bonus"} ]
 
 [ROM]
 # values starting with $ refer to macro definitions in the .def file
