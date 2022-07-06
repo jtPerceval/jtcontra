@@ -7,6 +7,7 @@ on:
       - build
       - mist
       - build_mx5k
+      - master
 
   workflow_dispatch:
 
