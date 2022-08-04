@@ -5,7 +5,7 @@ JTCONTRA_PCB=1
 JTFRAME_CLK24
 # Not really stereo, but left so jtcontra_game
 # can be shared easily
-STEREO_GAME
+JTFRAME_STEREO
 JTFRAME_COLORW=5
 JTFRAME_WIDTH=280
 JTFRAME_HEIGHT=240
