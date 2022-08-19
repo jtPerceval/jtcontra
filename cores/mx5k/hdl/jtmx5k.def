@@ -8,6 +8,11 @@ JTFRAME_WIDTH=280
 JTFRAME_HEIGHT=240
 JTFRAME_BUTTONS=3
 JTFRAME_CREDITS
+# There is a large blank period
+# in the credits because going over
+# 4 pages, automatically requires 8 pages
+# in memory
+JTFRAME_CREDITS_PAGES=5
 
 # ROM offsets
 SND_START=0x10000
