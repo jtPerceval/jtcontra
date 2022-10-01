@@ -13,6 +13,6 @@ export MEM_CHECK_TIME=210_000_000
 export CONVERT_OPTIONS="-resize 300%x300%"
 
 # Generic simulation script from JTFRAME
-jtsim -mist -sysname contra  \
+jtsim -mist -sysname comsc  \
     -d JTFRAME_DWNLD_PROM_ONLY \
     $*

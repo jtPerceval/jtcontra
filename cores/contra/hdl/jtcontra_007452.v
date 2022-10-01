@@ -74,7 +74,7 @@ always @(posedge clk, posedge rst) begin
                     { divaux, dividend } <= divfull<<1;
             end
             if( cnt[4] ) rmnd <= divstep[16] ? divaux : divstep[15:0];
-            cnt <= cnt+1;
+            cnt <= cnt+1'd1;
         end
         // Bus access
         if( cs && !wrn ) begin
