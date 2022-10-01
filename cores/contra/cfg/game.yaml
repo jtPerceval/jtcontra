@@ -1,7 +1,7 @@
 game:
   - from: contra
     get:
-      - common.yaml
+      - ../cfg/common.yaml
       - jtcontra_main_decoder.v
       - jtcontra_007766.v
       - jtcontra_sound.v

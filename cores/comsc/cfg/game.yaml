@@ -1,7 +1,7 @@
 game:
   - from: contra
     get:
-      - common.yaml
+      - ../cfg/common.yaml
   - from: comsc
     get:
       - jtcomsc_main_decoder.v
@@ -19,7 +19,7 @@ modules:
   other:
     - from: jt12
       get:
-        - hdl/jt03.qip
+        - hdl/jt03.yaml
         - jt49/hdl/filter/jt49_dcrm2.v
 
 
