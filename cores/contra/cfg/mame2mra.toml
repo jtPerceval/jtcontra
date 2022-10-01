@@ -1,0 +1,14 @@
+[global]
+mraauthor=["jotego"]
+
+[parse]
+sourcefile="contra.cpp"
+
+[buttons]
+core=2
+names = [
+    { names="Shoot,Jump" }
+]
+
+[dipsw]
+delete = [ "Unused", "Unknown" ]

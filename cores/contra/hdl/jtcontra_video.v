@@ -104,6 +104,7 @@ jtframe_cen48 u_cen(
     .clk        ( clk       ),    // 48 MHz
     .cen12      ( pxl2_cen  ),
     .cen16      (           ),
+    .cen16b     (           ),
     .cen8       (           ),
     .cen6       ( pxl_cen   ),
     .cen4       (           ),
@@ -163,6 +164,9 @@ jtcontra_gfx #(
     .rom_cs     ( gfx1_romcs    ),
     .rom_ok     ( gfx1_ok       ),
     .pxl_out    ( gfx1_pxl      ),
+    // Unused
+    .col_cs     (               ),
+    .pxl_pal    (               ),
     // Test
     .gfx_en     ( gfx_en[1:0]   )
 );
@@ -210,6 +214,9 @@ jtcontra_gfx #(
     .rom_cs     ( gfx2_romcs    ),
     .rom_ok     ( gfx2_ok       ),
     .pxl_out    ( gfx2_pxl      ),
+    // Unused
+    .col_cs     (               ),
+    .pxl_pal    (               ),
     // Test
     .gfx_en     ( gfx_en[3:2]   )
 );

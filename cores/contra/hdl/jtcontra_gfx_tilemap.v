@@ -85,7 +85,7 @@ reg  [ 2:0] dump_cnt;
 reg  [15:0] pxl_data;
 reg  [8:0]  hrender;
 wire        txt_row;    // signal whether the current row being rendered is text or graphics
-wire [ 9:0] scr_hn0, hn;
+wire [ 8:0] scr_hn0, hn;
 reg         scores;
 reg         hflip, vflip;
 
@@ -135,7 +135,7 @@ always @(posedge clk) begin
             case( st )
                 0: begin
                     hn_txt <= 0;
-                    hn_scr <= scr_hn0[8:0];
+                    hn_scr <= scr_hn0;
                     //hrender <= ( txt_en ? chr_dump_start : scr_dump_start )
                     //           - { 7'd0, scr_hn0[1:0] } - 9'd1;
                     hrender <= scr_dump_start - 1'd1 - (txt_en ? 9'd0 : { 7'd0, scr_hn0[1:0] });

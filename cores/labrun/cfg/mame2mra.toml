@@ -1,0 +1,14 @@
+[global]
+mraauthor=["jotego"]
+
+[parse]
+sourcefile="labyrunr.cpp"
+
+[buttons]
+core=2
+names = [
+    { names="Shoot,Bomb" }
+]
+
+[dipsw]
+delete = [ "Unused", "Unknown" ]

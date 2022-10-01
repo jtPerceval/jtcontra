@@ -1,0 +1,14 @@
+[global]
+mraauthor=["jotego"]
+
+[parse]
+sourcefile="combatsc.cpp"
+
+[buttons]
+core=2
+names = [
+    { names="Shoot,Jump" }
+]
+
+[dipsw]
+delete = [ "Unused", "Unknown" ]

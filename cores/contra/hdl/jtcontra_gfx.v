@@ -364,7 +364,7 @@ wire        blank_area    = vdump<9'o20 || (!layout && (border_narrow||border_wi
 wire [11:0] obj_scan_addr;
 wire        scrwin        = scr_pxl[8];
 wire        tile_prio     = prio_en[0] & scrwin & (~prio_en[1] | ~tile_blank);
-wire        no_obj        = layout && ( flip ? hdump>=9'o360 : hdump<8'o50);
+wire        no_obj        = layout && ( flip ? hdump>=9'o360 : hdump<9'o50);
 wire        scr_sel       = obj_blank || no_obj || tile_prio || txt_line;
 
 reg [7:0] vprom_addr1;

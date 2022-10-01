@@ -119,7 +119,8 @@ jtframe_sys6809 #(.RAM_AW(11)) u_cpu(
     // Bus multiplexer is external
     .ram_dout   ( ram_dout  ),
     .cpu_dout   ( cpu_dout  ),
-    .cpu_din    ( cpu_din   )
+    .cpu_din    ( cpu_din   ),
+    .VMA        (           )
 );
 
 jtframe_frac_cen u_fmcen(

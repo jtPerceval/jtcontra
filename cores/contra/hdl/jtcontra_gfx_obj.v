@@ -72,7 +72,7 @@ wire [ 8:0] vf;
 
 //assign      line_addr = { flip ? 9'h0EF-xpos + (layout ? 9'o50 : 0) : xpos };
 assign      line_addr = { flip ? 9'h117-xpos : xpos };
-assign      scan_addr = scan_base + byte_sel;
+assign      scan_addr = scan_base + { 7'd0, byte_sel };
 assign      vf        = vrender ^ {1'b0, {8{flip}}};
 
 always @(*) begin
@@ -85,22 +85,22 @@ assign rom_addr = { code, vsub[2:0], h4 }; // 14+3+1 = 18
 always @(posedge clk) begin
     if( rst ) begin
         done    <= 1;
-        pal     <= 4'd0;
-        code    <= 13'd0;
+        pal     <= 0;
+        code    <= 0;
         line_we <= 0;
-        st      <= 3'd0;
-        size_cnt<= 4'd0;
-        dump_cnt<= 8'd0;
+        st      <= 0;
+        size_cnt<= 0;
+        dump_cnt<= 0;
         h4      <= 0;
     end else begin
         last_HS <= HS;
         if( HS && !last_HS && LVBL) begin
             done      <= 0;
             rom_cs    <= 0;
-            st        <= 3'd0;
-            scan_base <= 10'd0;
+            st        <= 0;
+            scan_base <= 0;
             byte_sel  <= 3'd4;      // get obj size
-            pxl_cnt   <= 8'd0;
+            pxl_cnt   <= 0;
         end else begin
             if(!done) st <= st + 4'd1;
             case( st )
@@ -126,7 +126,7 @@ always @(posedge clk) begin
                         done   <= 1;
                         rom_cs <= 0;
                     end else begin
-                        if( (vf < obj_scan &&
+                        if( (vf < {1'b0,obj_scan} &&
                              {1'b1,vf[7:0]}>=upper_limit )
                             || vf[8:0] >= upper_limit[8:0] ) begin
                             st        <= 9; // next tile
@@ -166,7 +166,7 @@ always @(posedge clk) begin
                       if( rom_ok ) begin
                         pxl_data <= rom_data;
                         rom_cs   <= 0;
-                        dump_cnt <= 4'h7;
+                        dump_cnt <= 7;
                     end else st <= st;
                 end
                 7: begin // dumps 4 pixels
