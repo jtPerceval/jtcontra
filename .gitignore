@@ -9,4 +9,9 @@ history
 *.log
 *.wav
 *.xml
+*.f
+test.cpp
+game_test.v
 test.shm
+rom/*.rom
+rom/mra/*.arc

@@ -26,5 +26,5 @@ modules:
       - common.yaml
     - from: jt12
       get:
-        - hdl/jt03.qip
+        - hdl/jt03.yaml
         - jt49/hdl/filter/jt49_dcrm2.v

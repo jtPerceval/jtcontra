@@ -16,6 +16,4 @@ export CONVERT_OPTIONS="-resize 300%x300%"
 # Generic simulation script from JTFRAME
 jtsim -mist -sysname labrun  \
     -d JTFRAME_DWNLD_PROM_ONLY \
-    -def ../../hdl/jtlabrun.def \
-    -videow 280 -videoh 224 \
     $*

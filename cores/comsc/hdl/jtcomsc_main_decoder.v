@@ -56,7 +56,7 @@ module jtcomsc_main_decoder(
     input      [3:0]    dipsw_c
 );
 
-reg         bank_cs,  vbank_cs, in_cs,    out_cs, gfx_cs, io_cs,
+reg         bank_cs,  vbank_cs, in_cs, gfx_cs, io_cs,
             sdata_cs, son_cs,   track_cs, dmp_cs;
 reg  [ 3:0] bank;
 reg  [ 7:0] port_in;
@@ -78,7 +78,7 @@ always @(*) begin
     son_cs      = io_cs && A[4:2]==3'b110; // 0418
     bank_cs     = io_cs && A[4:2]==3'b100; // 0410
     vbank_cs    = io_cs && A[4:2]==3'b011; // 040C
-    out_cs      = io_cs && A[4:2]==3'b010; // 0408 - coin counters
+    //out_cs      = io_cs && A[4:2]==3'b010; // 0408 - coin counters
     // coin counters will fall here, // 0408
     //track_cs    = io_cs && A[4:2]==3'b001; // 0404
     in_cs       = io_cs && A[4:3]==2'b00; // 0400
