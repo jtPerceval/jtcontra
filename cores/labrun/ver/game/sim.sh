@@ -10,7 +10,6 @@ fi
 ln -sf $ROMFILE rom.bin
 ln -sf $ROMFILE sdram_bank0.bin
 
-export MEM_CHECK_TIME=210_000_000
 export CONVERT_OPTIONS="-resize 300%x300%"
 
 # Generic simulation script from JTFRAME

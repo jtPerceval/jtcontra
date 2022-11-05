@@ -278,7 +278,7 @@ always @(posedge clk24) begin
     end else begin
         if(cpu_cen && !cpu_rnw) begin
             if( cfg_cs )
-                mmr[ addr[6:0] ] <= cpu_dout;
+                mmr[ addr[2:0] ] <= cpu_dout;
             if( zure_cs ) begin
                 if( addr[6] )
                     strip_map[ addr[4:0] ] <= cpu_dout[0];

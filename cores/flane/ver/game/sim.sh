@@ -1,7 +1,5 @@
 #!/bin/bash
 
-eval `jtcfgstr -target=mist -output=bash -parse ../../hdl/jtflane.def |grep _START`
-
 jtsim_sdram
 
 # Generic simulation script from JTFRAME

@@ -227,7 +227,6 @@ jtmx5k_video u_video (
 );
 `endif
 
-`ifndef NOSOUND
 jtmx5k_sound u_sound(
     .rst        ( rst24         ),
     .clk        ( clk24         ), // 24 MHz
@@ -255,14 +254,6 @@ jtmx5k_sound u_sound(
     .sample     ( sample        ),
     .peak       ( game_led      )
 );
-`else
-assign snd_cs   = 0;
-assign pcm_cs   = 0;
-assign snd_addr = 15'd0;
-assign snd      = 0;
-assign game_led = 0;
-assign sample   = 0;
-`endif
 
 jtframe_rom #(
     .SLOT0_AW    ( 18              ), // GFX1
@@ -329,7 +320,7 @@ jtframe_rom #(
     .slot8_dout  (               ),
 
     // SDRAM interface
-    .sdram_req   ( sdram_req     ),
+    .sdram_rd    ( sdram_req     ),
     .sdram_ack   ( sdram_ack     ),
     .data_dst    ( data_dst      ),
     .data_rdy    ( data_rdy      ),

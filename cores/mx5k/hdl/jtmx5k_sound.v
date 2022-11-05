@@ -44,7 +44,7 @@ module jtmx5k_sound(
     output               sample,
     output               peak
 );
-
+`ifndef NOSOUND
 wire        [ 7:0]  cpu_dout, ram_dout, fm_dout;
 wire        [15:0]  A;
 reg         [ 7:0]  cpu_din;
@@ -191,10 +191,7 @@ jt51 u_jt51(
     .right      (           ),
     // Full resolution output
     .xleft      ( fm_left   ),
-    .xright     ( fm_right  ),
-    // unsigned outputs for sigma delta converters, full resolution
-    .dacleft    (           ),
-    .dacright   (           )
+    .xright     ( fm_right  )
 );
 
 jt007232 u_pcm(
@@ -224,5 +221,12 @@ jt007232 u_pcm(
     .sndb       (           ),
     .snd        ( pcm_snd   )
 );
-
+`else
+assign rom_cs   = 0;
+assign pcm_cs   = 0;
+assign rom_addr = 15'd0;
+assign snd      = 0;
+assign peak     = 0;
+assign sample   = 0;
+`endif
 endmodule

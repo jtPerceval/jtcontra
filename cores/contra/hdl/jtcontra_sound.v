@@ -109,7 +109,6 @@ jtframe_sys6809 #(.RAM_AW(11)) u_cpu(
     .irq_ack    (           ),
     // Bus sharing
     .bus_busy   ( 1'b0      ),
-    .waitn      (           ),
     // memory interface
     .A          ( A         ),
     .RnW        ( RnW       ),
@@ -150,10 +149,7 @@ jt51 u_jt51(
     .right      (           ),
     // Full resolution output
     .xleft      ( snd_left  ),
-    .xright     ( snd_right ),
-    // unsigned outputs for sigma delta converters, full resolution
-    .dacleft    (           ),
-    .dacright   (           )
+    .xright     ( snd_right )
 );
 
 `ifdef SIMULATION
