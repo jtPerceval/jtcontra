@@ -35,24 +35,6 @@ module jtmx5k_game(
     input   [ 1:0]  coin_input,
     input   [ 6:0]  joystick1,
     input   [ 6:0]  joystick2,
-    // SDRAM interface
-    input           downloading,
-    output          dwnld_busy,
-    output          sdram_req,
-    output  [21:0]  sdram_addr,
-    input   [15:0]  data_read,
-    input           data_dst,
-    input           data_rdy,
-    input           sdram_ack,
-    // ROM LOAD
-    input   [24:0]  ioctl_addr,
-    input   [ 7:0]  ioctl_dout,
-    input           ioctl_wr,
-    output  [21:0]  prog_addr,
-    output  [ 7:0]  prog_data,
-    output  [ 1:0]  prog_mask,
-    output          prog_we,
-    output          prog_rd,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input   [31:0]  dipsw,
@@ -68,27 +50,17 @@ module jtmx5k_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [ 3:0]  gfx_en
+    input   [ 3:0]  gfx_en,
+    // Ports
+    `include "mem_ports.inc"
 );
 
-// SDRAM offsets.
-localparam SND_OFFSET  = `SND_START >> 1;
-localparam GFX1_OFFSET = `GFX_START >> 1;
-localparam PCM_OFFSET  = `PCM_START >> 1;
-
-wire        main_cs, snd_cs, snd_ok, main_ok, gfx1_ok;
-wire        pcma_cs,  pcma_ok, pcmb_cs, pcmb_ok;
 wire        snd_irq;
-wire [15:0] gfx1_data, gfx2_data;
-wire [ 7:0] pcma_data, pcmb_data;
-wire [17:0] pcma_addr, pcmb_addr;
-wire [17:0] gfx1_addr, gfx2_addr;
+wire [15:0] gfx2_data;
+wire [17:0] gfx2_addr;
 
-wire [ 7:0] main_data, snd_data, snd_latch;
-wire [14:0] snd_addr;
-wire [17:0] main_addr;
+wire [ 7:0] snd_latch;
 wire        cen12, cen3, cen1p5;
-wire        gfx1_cs;
 
 wire [ 7:0] dipsw_a, dipsw_b;
 wire [ 3:0] dipsw_c;
@@ -101,8 +73,6 @@ wire [ 7:0] gfx1_dout, pal_dout, cpu_dout;
 wire [ 7:0] video_bank;
 wire        prio_latch;
 
-assign prog_rd    = 0;
-assign dwnld_busy = downloading;
 assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[19:0];
 
 jtframe_cen24 u_cen(
@@ -120,21 +90,6 @@ jtframe_cen24 u_cen(
     .cen3b      (               ),
     .cen3qb     (               ),
     .cen1p5b    (               )
-);
-
-jtframe_dwnld #(.SWAB(1)) u_dwnld(
-    .clk            ( clk           ),
-    .downloading    ( downloading   ),
-    .ioctl_addr     ( ioctl_addr    ),
-    .ioctl_dout     ( ioctl_dout    ),
-    .ioctl_wr       ( ioctl_wr      ),
-    .prog_addr      ( prog_addr     ),
-    .prog_data      ( prog_data     ),
-    .prog_mask      ( prog_mask     ), // active low
-    .prog_we        ( prog_we       ),
-    .prom_we        (               ),
-    .sdram_ack      ( sdram_ack     ),
-    .header         (               )
 );
 
 `ifndef NOMAIN
@@ -253,80 +208,6 @@ jtmx5k_sound u_sound(
     .snd        ( snd           ),
     .sample     ( sample        ),
     .peak       ( game_led      )
-);
-
-jtframe_rom #(
-    .SLOT0_AW    ( 18              ), // GFX1
-    .SLOT0_DW    ( 16              ),
-    .SLOT0_OFFSET( GFX1_OFFSET     ),
-
-    .SLOT2_AW    ( 18              ), // ADPCM
-    .SLOT2_DW    (  8              ),
-    .SLOT2_OFFSET( PCM_OFFSET      ),
-
-    .SLOT3_AW    ( 18              ), // ADPCM
-    .SLOT3_DW    (  8              ),
-    .SLOT3_OFFSET( PCM_OFFSET      ),
-
-    .SLOT6_AW    ( 15              ), // Sound
-    .SLOT6_DW    (  8              ),
-    .SLOT6_OFFSET( SND_OFFSET      ),
-
-    .SLOT7_AW    ( 18              ),
-    .SLOT7_DW    (  8              ),
-    .SLOT7_OFFSET(  0              )  // Main
-) u_rom (
-    .rst         ( rst           ),
-    .clk         ( clk           ),
-
-    .slot0_cs    ( gfx1_romcs    ),
-    .slot1_cs    ( 1'b0          ),
-    .slot2_cs    ( pcma_cs       ),
-    .slot3_cs    ( pcmb_cs       ),
-    .slot4_cs    ( 1'b0          ), // unused
-    .slot5_cs    ( 1'b0          ), // unused
-    .slot6_cs    ( snd_cs        ),
-    .slot7_cs    ( main_cs       ),
-    .slot8_cs    ( 1'b0          ),
-
-    .slot0_ok    ( gfx1_ok       ),
-    .slot1_ok    (               ),
-    .slot2_ok    ( pcma_ok       ),
-    .slot3_ok    ( pcmb_ok       ),
-    .slot4_ok    (               ),
-    .slot5_ok    (               ),
-    .slot6_ok    ( snd_ok        ),
-    .slot7_ok    ( main_ok       ),
-    .slot8_ok    (               ),
-
-    .slot0_addr  ( gfx1_addr     ),
-    .slot1_addr  (               ),
-    .slot2_addr  ( pcma_addr     ),
-    .slot3_addr  ( pcmb_addr     ),
-    .slot4_addr  (               ),
-    .slot5_addr  (               ),
-    .slot6_addr  ( snd_addr      ),
-    .slot7_addr  ( main_addr     ),
-    .slot8_addr  (               ),
-
-    .slot0_dout  ( gfx1_data     ),
-    .slot1_dout  (               ),
-    .slot2_dout  ( pcma_data     ),
-    .slot3_dout  ( pcmb_data     ),
-    .slot4_dout  (               ),
-    .slot5_dout  (               ),
-    .slot6_dout  ( snd_data      ),
-    .slot7_dout  ( main_data     ),
-    .slot8_dout  (               ),
-
-    // SDRAM interface
-    .sdram_rd    ( sdram_req     ),
-    .sdram_ack   ( sdram_ack     ),
-    .data_dst    ( data_dst      ),
-    .data_rdy    ( data_rdy      ),
-    .downloading ( downloading   ),
-    .sdram_addr  ( sdram_addr    ),
-    .data_read   ( data_read     )
 );
 
 endmodule
