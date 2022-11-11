@@ -5,6 +5,8 @@ params:
   - { name: GFX2_OFFSET, value: "GAME==CONTRA ? (GFX1_OFFSET + (22'h8_0000 >> 1)) : 22'h14_0000>>1" }
   - { name: PCM_OFFSET,  value: "22'h1C0000>>1" }
   - { name: SND_OFFSET,  value: "(GAME==CONTRA ? 22'h2_0000 : 22'h3_0000) >> 1" }
+download:
+  noswab: true
 sdram:
   banks:
     -
