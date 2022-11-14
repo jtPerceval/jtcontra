@@ -1,8 +1,9 @@
 #!/bin/bash
 
-jtsim_sdram
+touch gfx_cfg.hex
+# jtsim_sdram
 
 # Generic simulation script from JTFRAME
-jtsim -mist -sysname flane  \
-    -d JT51_NODEBUG  -d JTFRAME_SIM_ROMRQ_NOCHECK \
-    $*
+# The game takes ~450 frames after loading before
+#
+jtsim -d JT51_NODEBUG  -d JTFRAME_SIM_ROMRQ_NOCHECK $*

@@ -35,24 +35,6 @@ module jtflane_game(
     input   [ 1:0]  coin_input,
     input   [ 5:0]  joystick1,
     input   [ 5:0]  joystick2,
-    // SDRAM interface
-    input           downloading,
-    output          dwnld_busy,
-    output          sdram_req,
-    output  [21:0]  sdram_addr,
-    input   [15:0]  data_read,
-    input           data_dst,
-    input           data_rdy,
-    input           sdram_ack,
-    // ROM LOAD
-    input   [24:0]  ioctl_addr,
-    input   [ 7:0]  ioctl_dout,
-    input           ioctl_wr,
-    output  [21:0]  prog_addr,
-    output  [ 7:0]  prog_data,
-    output  [ 1:0]  prog_mask,
-    output          prog_we,
-    output          prog_rd,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input   [31:0]  dipsw,
@@ -68,41 +50,20 @@ module jtflane_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [ 3:0]  gfx_en
+    input   [ 3:0]  gfx_en,
+    `include "mem_ports.inc"
 );
 
-// SDRAM offsets.
-localparam GFX_OFFSET  =  `GFX_START>>1;
-localparam PCM0_OFFSET =  'hA_0000>>1;
-localparam PCM1_OFFSET =  'hC_0000>>1;
-localparam PROM_START  =  'h140000;
-
-wire        main_cs, main_ok, gfx_cs, gfx_ok;
-wire [15:0] gfx_data;
-wire [17:0] gfx_addr;
-
-wire [ 7:0] main_data;
-wire [16:0] main_addr;
-wire        cen12, cen3, cen1p5, prom_we;
-
-wire [ 7:0] pcma_dout, pcmb_dout, pcmc_dout, pcmd_dout;
-wire        pcma_cs, pcma_ok,
-            pcmb_cs, pcmb_ok,
-            pcmc_cs, pcmc_ok,
-            pcmd_cs, pcmd_ok;
-wire [16:0] pcma_addr, pcmb_addr;
-wire [18:0] pcmc_addr, pcmd_addr;
+wire        cen12, cen3, cen1p5;
 
 wire [ 7:0] dipsw_a, dipsw_b;
 wire [ 3:0] dipsw_c;
 
 wire [13:0] cpu_addr;
-wire        gfx_irqn, gfx_romcs, pal_cs;
+wire        gfx_irqn, pal_cs, gfx_ramcs;
 wire        cpu_cen, cpu_rnw, cpu_irqn, cpu_nmin;
-wire [ 7:0] gfx_dout, pal_dout, cpu_dout, nc;
+wire [ 7:0] pal_dout, cpu_dout, gfx_dout;
 
-assign prog_rd    = 0;
-assign dwnld_busy = downloading;
 assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[19:0];
 
 
@@ -121,22 +82,6 @@ jtframe_cen24 u_cen(
     .cen3b      (               ),
     .cen3qb     (               ),
     .cen1p5b    (               )
-);
-
-jtframe_dwnld #(.PROM_START(PROM_START),.SWAB(1))
-u_dwnld(
-    .clk            ( clk           ),
-    .downloading    ( downloading   ),
-    .ioctl_addr     ( ioctl_addr    ),
-    .ioctl_dout     ( ioctl_dout    ),
-    .ioctl_wr       ( ioctl_wr      ),
-    .prog_addr      ( prog_addr     ),
-    .prog_data      ({nc, prog_data}),
-    .prog_mask      ( prog_mask     ), // active low
-    .prog_we        ( prog_we       ),
-    .prom_we        ( prom_we       ),
-    .sdram_ack      ( sdram_ack     ),
-    .header         (               )
 );
 
 `ifndef NOMAIN
@@ -163,7 +108,7 @@ jtflane_main u_main(
     .cpu_rnw        ( cpu_rnw       ),
     .gfx_irqn       ( cpu_irqn      ),
     .gfx_nmin       ( cpu_nmin      ),
-    .gfx_cs         ( gfx_cs        ),
+    .gfx_cs         ( gfx_ramcs     ),
     .pal_cs         ( pal_cs        ),
 
     .gfx_dout       ( gfx_dout      ),
@@ -171,22 +116,22 @@ jtflane_main u_main(
 
     // PCM sound
     .pcma_addr      ( pcma_addr     ),
-    .pcma_dout      ( pcma_dout     ),
+    .pcma_dout      ( pcma_data     ),
     .pcma_cs        ( pcma_cs       ),
     .pcma_ok        ( pcma_ok       ),
 
     .pcmb_addr      ( pcmb_addr     ),
-    .pcmb_dout      ( pcmb_dout     ),
+    .pcmb_dout      ( pcmb_data     ),
     .pcmb_cs        ( pcmb_cs       ),
     .pcmb_ok        ( pcmb_ok       ),
 
     .pcmc_addr      ( pcmc_addr     ),
-    .pcmc_dout      ( pcmc_dout     ),
+    .pcmc_dout      ( pcmc_data     ),
     .pcmc_cs        ( pcmc_cs       ),
     .pcmc_ok        ( pcmc_ok       ),
 
     .pcmd_addr      ( pcmd_addr     ),
-    .pcmd_dout      ( pcmd_dout     ),
+    .pcmd_dout      ( pcmd_data     ),
     .pcmd_cs        ( pcmd_cs       ),
     .pcmd_ok        ( pcmd_ok       ),
 
@@ -226,7 +171,7 @@ u_video (
     // GFX - CPU interface
     .cpu_irqn       ( cpu_irqn      ),
     .cpu_nmin       ( cpu_nmin      ),
-    .gfx_cs         ( gfx_cs        ),
+    .gfx_cs         ( gfx_ramcs     ),
     .pal_cs         ( pal_cs        ),
     .cpu_rnw        ( cpu_rnw       ),
     .cpu_cen        ( cpu_cen       ),
@@ -238,7 +183,7 @@ u_video (
     .gfx_addr       (  gfx_addr     ),
     .gfx_data       (  gfx_data     ),
     .gfx_ok         (  gfx_ok       ),
-    .gfx_romcs      (  gfx_romcs    ),
+    .gfx_romcs      (  gfx_cs       ),
     // pixels
     .red            ( red           ),
     .green          ( green         ),
@@ -247,86 +192,5 @@ u_video (
     .gfx_en         ( gfx_en        )
 );
 `endif
-
-jtframe_rom #(
-    .SLOT0_AW    ( 18              ),
-    .SLOT0_DW    ( 16              ),
-    .SLOT0_OFFSET( GFX_OFFSET      ),
-
-    // PCM 0
-    .SLOT1_AW    ( 17              ),
-    .SLOT1_DW    (  8              ),
-    .SLOT1_OFFSET( PCM0_OFFSET     ),
-
-    .SLOT2_AW    ( 17              ),
-    .SLOT2_DW    (  8              ),
-    .SLOT2_OFFSET( PCM0_OFFSET     ),
-
-    // PCM 0
-    .SLOT3_AW    ( 19              ),
-    .SLOT3_DW    (  8              ),
-    .SLOT3_OFFSET( PCM1_OFFSET     ),
-
-    .SLOT4_AW    ( 19              ),
-    .SLOT4_DW    (  8              ),
-    .SLOT4_OFFSET( PCM1_OFFSET     ),
-
-
-    .SLOT7_AW    ( 17              ),
-    .SLOT7_DW    (  8              ),
-    .SLOT7_OFFSET(  0              )  // Main
-) u_rom (
-    .rst         ( rst           ),
-    .clk         ( clk           ),
-
-    .slot0_cs    ( gfx_romcs     ),
-    .slot1_cs    ( pcma_cs       ),
-    .slot2_cs    ( pcmb_cs       ),
-    .slot3_cs    ( pcmc_cs       ), // unused
-    .slot4_cs    ( pcmd_cs       ), // unused
-    .slot5_cs    ( 1'b0          ), // unused
-    .slot6_cs    ( 1'b0          ),
-    .slot7_cs    ( main_cs       ),
-    .slot8_cs    ( 1'b0          ),
-
-    .slot0_ok    ( gfx_ok        ),
-    .slot1_ok    ( pcma_ok       ),
-    .slot2_ok    ( pcmb_ok       ),
-    .slot3_ok    ( pcmc_ok       ),
-    .slot4_ok    ( pcmd_ok       ),
-    .slot5_ok    (               ),
-    .slot6_ok    (               ),
-    .slot7_ok    ( main_ok       ),
-    .slot8_ok    (               ),
-
-    .slot0_addr  ( gfx_addr      ),
-    .slot1_addr  ( pcma_addr     ),
-    .slot2_addr  ( pcmb_addr     ),
-    .slot3_addr  ( pcmc_addr     ),
-    .slot4_addr  ( pcmd_addr     ),
-    .slot5_addr  (               ),
-    .slot6_addr  (               ),
-    .slot7_addr  ( main_addr     ),
-    .slot8_addr  (               ),
-
-    .slot0_dout  ( gfx_data      ),
-    .slot1_dout  ( pcma_dout     ),
-    .slot2_dout  ( pcmb_dout     ),
-    .slot3_dout  ( pcmc_dout     ),
-    .slot4_dout  ( pcmd_dout     ),
-    .slot5_dout  (               ),
-    .slot6_dout  (               ),
-    .slot7_dout  ( main_data     ),
-    .slot8_dout  (               ),
-
-    // SDRAM interface
-    .sdram_rd    ( sdram_req     ),
-    .sdram_ack   ( sdram_ack     ),
-    .data_dst    ( data_dst      ),
-    .data_rdy    ( data_rdy      ),
-    .downloading ( downloading   ),
-    .sdram_addr  ( sdram_addr    ),
-    .data_read   ( data_read     )
-);
 
 endmodule

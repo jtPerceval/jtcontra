@@ -1,5 +1,5 @@
 #!/bin/bash
 
-jtsim -mist -sysname mx5k  \
-    -d JT51_NODEBUG  \
-    $*
+touch gfx2_cfg.hex gfx1_cfg.hex
+
+jtsim -d JT51_NODEBUG $*

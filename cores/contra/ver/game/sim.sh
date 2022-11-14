@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -e sdram.hex ]; then
-    ln -sf $ROM/contra.rom rom.bin
+    ln -sfr $ROM/contra.rom rom.bin
     bin2hex <rom.bin >sdram_bank0.hex
 fi
 
