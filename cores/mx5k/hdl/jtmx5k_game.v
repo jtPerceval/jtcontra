@@ -66,7 +66,7 @@ wire [ 7:0] dipsw_a, dipsw_b;
 wire [ 3:0] dipsw_c;
 
 wire [15:0] cpu_addr;
-wire        gfx1_romcs, gfx2_romcs, gfx1_cfg_cs, gfx2_cfg_cs, pal_cs;
+wire        gfx1_ramcs, gfx2_ramcs, gfx1_cfg_cs, gfx2_cfg_cs, pal_cs;
 wire        gfx1_vram_cs, gfx2_vram_cs;
 wire        cpu_cen, cpu_rnw, cpu_irqn, cpu_nmin;
 wire [ 7:0] gfx1_dout, pal_dout, cpu_dout;
@@ -118,7 +118,7 @@ jtcontra_main #(.GAME(2)) u_main(
     .cpu_rnw        ( cpu_rnw       ),
     .gfx_irqn       ( cpu_irqn      ),
     .gfx_nmin       ( cpu_nmin      ),
-    .gfx1_cs        ( gfx1_cs       ),
+    .gfx1_cs        ( gfx1_ramcs    ),
     .gfx2_cs        (               ),
     .pal_cs         ( pal_cs        ),
 
@@ -160,7 +160,7 @@ jtmx5k_video u_video (
     // GFX - CPU interface
     .cpu_irqn       ( cpu_irqn      ),
     .cpu_nmin       ( cpu_nmin      ),
-    .gfx1_cs        ( gfx1_cs       ),
+    .gfx1_cs        ( gfx1_ramcs    ),
     .pal_cs         ( pal_cs        ),
     .cpu_rnw        ( cpu_rnw       ),
     .cpu_cen        ( cpu_cen       ),
@@ -172,7 +172,7 @@ jtmx5k_video u_video (
     .gfx1_addr      ( gfx1_addr     ),
     .gfx1_data      ( gfx1_data     ),
     .gfx1_ok        ( gfx1_ok       ),
-    .gfx1_romcs     ( gfx1_romcs    ),
+    .gfx1_romcs     ( gfx1_cs       ),
     // pixels
     .red            ( red           ),
     .green          ( green         ),
