@@ -7,7 +7,7 @@ if [ ! -e $ROMFILE ]; then
     exit 1
 fi
 
-ln -sf $ROMFILE rom.bin
+ln -srf $ROMFILE rom.bin
 
 touch gfx_cfg.hex
 # Generic simulation script from JTFRAME
