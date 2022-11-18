@@ -64,7 +64,7 @@ module jtcontra_game(
 localparam GAME=`JTCONTRA_PCB;
 localparam CONTRA=0;
 
-localparam PROM_START  =  GAME==CONTRA ? 25'h128_000 : 25'h2C_0000;
+localparam PROM_START  =  GAME==CONTRA ? 25'h12_8000 : 25'h2C_0000;
 
 wire        snd_irq;
 
