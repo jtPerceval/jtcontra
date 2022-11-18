@@ -1,7 +1,7 @@
 params:
   - { name: GFX_OFFSET, value: "`GFX_START>>1" }
-  - { name: PCM0_OFFSET, value: "22'hA0>>1" }
-  - { name: PCM1_OFFSET, value: "22'hC0>>1" }
+  - { name: PCM0_OFFSET, value: "22'hA_0000>>1" }
+  - { name: PCM1_OFFSET, value: "22'hC_0000>>1" }
 sdram:
   banks:
     -
