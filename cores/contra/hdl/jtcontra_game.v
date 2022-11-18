@@ -81,7 +81,7 @@ wire        cpu_cen, cpu_rnw, cpu_irqn, cpu_nmin;
 wire [ 7:0] gfx1_dout, gfx2_dout, pal_dout, cpu_dout;
 wire [ 7:0] video_bank;
 wire        prio_latch;
-
+ 
 assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[19:0];
 
 jtframe_cen24 u_cen(

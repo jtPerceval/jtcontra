@@ -3,7 +3,7 @@ params:
   - { name: CONTRA, value: "0"}
   - { name: GFX1_OFFSET, value: "GAME==CONTRA ? (SND_OFFSET  + (22'h0_8000 >> 1)) : 22'h04_0000>>1" }
   - { name: GFX2_OFFSET, value: "GAME==CONTRA ? (GFX1_OFFSET + (22'h8_0000 >> 1)) : 22'h14_0000>>1" }
-  - { name: PCM_OFFSET,  value: "22'h1C0000>>1" }
+  - { name: PCM_OFFSET,  value: "22'h1C_0000>>1" }
   - { name: SND_OFFSET,  value: "(GAME==CONTRA ? 22'h2_0000 : 22'h3_0000) >> 1" }
 download:
   noswab: true
