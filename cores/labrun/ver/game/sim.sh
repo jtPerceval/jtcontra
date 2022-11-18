@@ -8,11 +8,7 @@ if [ ! -e $ROMFILE ]; then
 fi
 
 ln -sf $ROMFILE rom.bin
-ln -sf $ROMFILE sdram_bank0.bin
 
-export CONVERT_OPTIONS="-resize 300%x300%"
-
+touch gfx_cfg.hex
 # Generic simulation script from JTFRAME
-jtsim -mist -sysname labrun  \
-    -d JTFRAME_DWNLD_PROM_ONLY \
-    $*
+jtsim -d JTFRAME_DWNLD_PROM_ONLY $*

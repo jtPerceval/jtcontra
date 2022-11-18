@@ -87,6 +87,7 @@ jtframe_cen48 u_cen(
     .cen3q      (           ), // 1/4 advanced with respect to cen3
     .cen1p5     (           ),
     .cen12b     (           ),
+    .cen16b     (           ),
     .cen6b      (           ),
     .cen3b      (           ),
     .cen3qb     (           ),

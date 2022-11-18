@@ -1,14 +1,12 @@
 #!/bin/bash
 
-if [ ! -e sdram.hex ]; then
-    ln -sfr $ROM/contra.rom rom.bin
-    bin2hex <rom.bin >sdram_bank0.hex
+touch gfx2_cfg.hex gfx1_cfg.hex
+
+if [ ! -e rom.bin ]; then
+    ln -s $ROM/contra.rom rom.bin
+    # Quickly convert from rom.bin to the SDRAM dump
+    # bin2hex <rom.bin >sdram_bank0.hex
 fi
 
-export CONVERT_OPTIONS="-resize 300%x300%"
-
 # Generic simulation script from JTFRAME
-jtsim -mist -sysname contra  \
-    -d JTFRAME_DWNLD_PROM_ONLY \
-    -d JT51_NODEBUG  \
-    $*
+jtsim -d JTFRAME_DWNLD_PROM_ONLY -d JT51_NODEBUG $*

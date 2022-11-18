@@ -209,7 +209,8 @@ jt03 u_fm0(
     .psg_A      (            ),
     .psg_B      (            ),
     .psg_C      (            ),
-    .snd        (            )
+    .snd        (            ),
+    .debug_view (            )
 );
 
 jt03 u_fm1(
@@ -232,7 +233,8 @@ jt03 u_fm1(
     .psg_A      (            ),
     .psg_B      (            ),
     .psg_C      (            ),
-    .snd        (            )
+    .snd        (            ),
+    .debug_view (            )
 );
 
 wire [10:0] psg_snd = {1'b0,psg0_snd} + {1'b0,psg1_snd};
