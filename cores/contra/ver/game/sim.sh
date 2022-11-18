@@ -3,7 +3,7 @@
 touch gfx2_cfg.hex gfx1_cfg.hex
 
 if [ ! -e rom.bin ]; then
-    ln -s $ROM/contra.rom rom.bin
+    ln -rs $ROM/contra.rom rom.bin
     # Quickly convert from rom.bin to the SDRAM dump
     # bin2hex <rom.bin >sdram_bank0.hex
 fi
